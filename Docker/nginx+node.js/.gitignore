@@ -1,0 +1,7 @@
+*
+!.gitignore
+!mysql/
+!nginx/
+!node/
+!docker-compose.yaml
+!README.md
