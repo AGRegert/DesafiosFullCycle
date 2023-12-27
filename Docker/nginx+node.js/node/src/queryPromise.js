@@ -20,28 +20,8 @@ async function query(sql) {
   return queryResults;
 }
 
-async function queryMultiple(sql, values) {
-  const connection = mysql.createConnection(config);
-
-  const queryPromise = new Promise((resolve, reject) => {
-    connection.query(sql, [values], (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  })
-
-  const queryResults = await queryPromise;
-
-  connection.end();
-  return queryResults;
-}
-
 const queryPromise = {
-  query,
-  queryMultiple
+  query
 }
 
 module.exports = { queryPromise };

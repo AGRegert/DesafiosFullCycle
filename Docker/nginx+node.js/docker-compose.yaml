@@ -6,7 +6,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     image: agregert/fullcycle:desafio-docker-nginx
-    entrypoint: dockerize -wait http://app:3000 -timeout 120s nginx -g "daemon off;"
+    entrypoint: dockerize -wait http://app:3000 -timeout 300s nginx -g "daemon off;"
     container_name: nginx
     networks:
       - node-network

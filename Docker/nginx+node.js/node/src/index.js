@@ -1,20 +1,23 @@
 const express = require('express')
 const { queryPromise } = require('./queryPromise')
 
-async function createApp() {
-  const app = express()
-  const sqlTable = `CREATE TABLE IF NOT EXISTS people(id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY(id))`;
+async function insertPerson(person) {
+  const sqlInsert = `INSERT INTO people (name) SELECT '${person}' WHERE NOT EXISTS (SELECT * FROM people WHERE name = '${person}')`
+  await queryPromise.query(sqlInsert, person)
+}
 
+async function initDatabase() {
+  const sqlTable = `CREATE TABLE IF NOT EXISTS people(id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY(id))`
   await queryPromise.query(sqlTable)
-  
-  // insert into table people if name not exists
-  const person1 = 'André Germano Regert'
-  const sqlInsert1 = `INSERT INTO people (name) SELECT '${person1}' WHERE NOT EXISTS (SELECT * FROM people WHERE name = '${person1}')`
-  await queryPromise.query(sqlInsert1, person1)
-  
-  const person2 = 'Airton Senna'
-  const sqlInsert2 = `INSERT INTO people (name) SELECT '${person2}' WHERE NOT EXISTS (SELECT * FROM people WHERE name = '${person2}')`
-  await queryPromise.query(sqlInsert2, person2)
+
+  insertPerson('Airton Senna')
+  insertPerson('Nelson Piquet')
+  insertPerson('Nigel Mansell')
+}
+
+
+async function initApp() {
+  const app = express()
 
   app.get('/', async (req, res) => {
     const selectCharacters = `SELECT * FROM people`
@@ -27,7 +30,14 @@ async function createApp() {
 
     res.send(html)
   })
-  return app
+
+  return app;
+}
+
+async function createApp() {
+  await initDatabase()
+
+  return initApp()
 }
 
 module.exports = createApp
