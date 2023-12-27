@@ -14,27 +14,29 @@ services:
   #   depends_on:
   #     - app
 
-  # app:
-  #   build:
-  #     context: ./node
-  #     dockerfile: Dockerfile
-  #   image: agregert/fullcycle:desafio-docker-node
-  #   container_name: app
-  #   entrypoint: dockerize -wait tcp://db:3306 -timeout 60s docker-entrypoint.sh
-  #   networks:
-  #     - node-network
-  #   volumes:
-  #     - ./node:/usr/src/app
-  #   tty: true
-  #   depends_on:
-  #     - db
+  app:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    image: agregert/fullcycle:desafio-docker-node
+    ports:
+      - 8080:3000
+    container_name: app
+    entrypoint: wait-for db:3306 -t 40 -- /home/node/app/start.sh
+    networks:
+      - node-network
+    volumes:
+      - ./node/src:/home/node/app
+    tty: true
+    depends_on:
+      - db
 
   db:
     build:
       context: ./mysql
       dockerfile: Dockerfile
     image: agregert/fullcycle:desafio-docker-mysql
-    command: --innodb-use-native-aio=0
+    command: --innodb-use-native-aio=0 
     container_name: db
     restart: always
     tty: true

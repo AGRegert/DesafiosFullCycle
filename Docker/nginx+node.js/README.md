@@ -4,6 +4,6 @@ A ideia é executar o comando:
 
 docker compose up
 
-E instanciar as 3 imagens que serão configuradas: db, app e nginx. Apenas a imagem nginx terá a porta 80 exposta. 
+E instanciar as 3 imagens que serão configuradas: db, app e nginx. Apenas a imagem nginx terá a porta 8080 exposta. 
 
-A implementação atual apenas contém a configuração para a db. Após executar o docker compose up, é necessário executar em modo iterativo o script /root/initdb.sh para popular as tabelas utilizadas pelo app.
+A implementação atual contém a configuração para as imagens db e a app. Após executar o docker compose up, é possível ver o resultado abrindo o navegador em http://localhost:8080

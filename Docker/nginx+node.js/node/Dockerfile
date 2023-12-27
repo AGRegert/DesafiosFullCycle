@@ -1,11 +1,10 @@
-FROM node:15
+FROM node:18
 
-WORKDIR /usr/src/app
+RUN apt update && \
+    apt install -y wget netcat-traditional && \
+    wget -q -O /usr/bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for && \
+    chmod +x /usr/bin/wait-for
 
-ENV DOCKERIZE_VERSION v0.7.0
-RUN wget -O - https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz | tar xzf - -C /usr/local/bin \
-    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
+USER node
 
-RUN npm init -y
-    
-EXPOSE 3000
+WORKDIR /home/node/app
