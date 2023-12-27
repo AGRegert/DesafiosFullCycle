@@ -6,6 +6,12 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     image: ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:desafio-docker-nginx
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 30s
     entrypoint: dockerize -wait http://app:3000 -timeout 300s nginx -g "daemon off;"
     container_name: nginx
     networks:
@@ -21,6 +27,12 @@ services:
       dockerfile: Dockerfile
     image: ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:desafio-docker-node
     container_name: app
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 30s
     entrypoint: wait-for db:3306 -t 40 -- /home/node/app/start.sh
     networks:
       - node-network
