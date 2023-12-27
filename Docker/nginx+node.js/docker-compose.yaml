@@ -5,7 +5,7 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: agregert/fullcycle:desafio-docker-nginx
+    image: ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:desafio-docker-nginx
     entrypoint: dockerize -wait http://app:3000 -timeout 300s nginx -g "daemon off;"
     container_name: nginx
     networks:
@@ -19,7 +19,7 @@ services:
     build:
       context: ./node
       dockerfile: Dockerfile
-    image: agregert/fullcycle:desafio-docker-node
+    image: ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:desafio-docker-node
     container_name: app
     entrypoint: wait-for db:3306 -t 40 -- /home/node/app/start.sh
     networks:
@@ -34,7 +34,7 @@ services:
     build:
       context: ./mysql
       dockerfile: Dockerfile
-    image: agregert/fullcycle:desafio-docker-mysql
+    image: ${DOCKERHUB_USER}/${DOCKERHUB_REPO}:desafio-docker-mysql
     command: --innodb-use-native-aio=0 
     container_name: db
     restart: always
