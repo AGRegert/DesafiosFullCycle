@@ -10,9 +10,9 @@ async function initDatabase() {
   const sqlTable = `CREATE TABLE IF NOT EXISTS people(id int NOT NULL AUTO_INCREMENT, name varchar(255) NOT NULL, PRIMARY KEY(id))`
   await queryPromise.query(sqlTable)
 
-  insertPerson('Airton Senna')
-  insertPerson('Nelson Piquet')
-  insertPerson('Nigel Mansell')
+  await insertPerson('Airton Senna')
+  await insertPerson('Nelson Piquet')
+  await insertPerson('Nigel Mansell')
 }
 
 
